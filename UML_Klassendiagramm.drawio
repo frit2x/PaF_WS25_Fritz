@@ -81,7 +81,7 @@
         <mxCell id="gdp9og2SNnKYpz_O8ZZ5-23" value="+ sendeInfo(text : String) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="gdp9og2SNnKYpz_O8ZZ5-20">
           <mxGeometry y="108" width="305" height="52" as="geometry" />
         </mxCell>
-        <mxCell id="gdp9og2SNnKYpz_O8ZZ5-48" value="0..1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+        <mxCell id="gdp9og2SNnKYpz_O8ZZ5-48" value="0..n" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="20" y="630" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="gdp9og2SNnKYpz_O8ZZ5-50" value="n" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
