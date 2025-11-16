@@ -20,25 +20,20 @@
   - Abos und Kontingente verwalten
   - (Optional) Reporting und Statistiken über Bestellungen und Anfragen
 
-
-### Informationsarchitektur / Navigationsstruktur
-
-Festlegung, wie die Inhalte und Funktionen gegliedert sind und wie Nutzer zwischen ihnen navigieren (Menüs, Links, Seitenstruktur).
+### Informationsarchitektur / Navigationsstruktur (nur Kundensicht)
+- **Startseite:**
+  - Link zur Profilseite (Aktion: Daten bearbeiten)
+  - Artikel Übersicht / Suche / Menü / Filtermöglichkeit / Pagination ---> Link zum Artikel 
+  - Infobereich: aktuelle Bestellung ---> Seite mit Aktuellen und abgeschlossenen Bestellungen / Rechnungen
+- **Profilseite:**
+  - Name, Adresse, E-Mail, Abo (Aktion: Daten ändern)
+- **Artikel:**
+  - Name, Bild, Preis, Lieferzeit (Aktion: in den Warenkorb)
+- **Warenkorb:**
+  - Artikel die gekauft werden sollen (Aktion: Löschen / Anzahl editieren / kaufen)
 
 ### Wireframes / Mockups
-Visuelle Skizzen der Benutzeroberfläche mit Layout, Platzierung von Elementen wie Eingabefelder, Buttons, Listen, Überschriften. Fokus auf Struktur, nicht Design.
+Wird im Draw.io (siehe Link im PDF) erstellt
 
-### Interaktionsdesign
+### Interaktionsdesign (offen)
 Beschreibung, wie Nutzer mit der Oberfläche interagieren (z.B. Formular absenden, Liste filtern, Statusanzeigen), inklusive Feedback bei Aktionen.
-
-### Visuelles Design (optional für Protoyping)
-Farbschema, Schriftarten, Icons und visuelle Hierarchien, falls gewünscht oder gefordert.
-
-### Responsiveness / Usability-Überlegungen
-Sicherstellung, dass UI auf verschiedenen Geräten gut nutzbar ist und einfach zu bedienen bleibt.
-
-
-
-
-
-
