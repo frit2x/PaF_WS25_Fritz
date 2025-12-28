@@ -27,3 +27,7 @@ ng serve
 
 Angular / Frontend läuft auf:
 ➡ http://localhost:4200
+
+http://localhost:8081/api/subscriptions
+
+http://localhost:8081/h2-console/login.jsp?jsessionid=951dc879030aaf70f2167cf9d88a1577
