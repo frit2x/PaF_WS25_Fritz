@@ -4,3 +4,6 @@
 /Users/heikefritz/Documents/Studium/PaF/git/PaF_WS25_Fritz/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/api/ProductController.java
 /Users/heikefritz/Documents/Studium/PaF/git/PaF_WS25_Fritz/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/controller/SubscriptionController.java
 /Users/heikefritz/Documents/Studium/PaF/git/PaF_WS25_Fritz/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/infrastructure/ProductEntity.java
+/Users/heikefritz/Documents/Studium/PaF/git/PaF_WS25_Fritz/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/model/Subscription.java
+/Users/heikefritz/Documents/Studium/PaF/git/PaF_WS25_Fritz/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/service/SubscriptionService.java
+/Users/heikefritz/Documents/Studium/PaF/git/PaF_WS25_Fritz/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/repository/SubscriptionRepository.java

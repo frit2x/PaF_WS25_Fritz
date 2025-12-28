@@ -1,6 +1,9 @@
 com/thefancygoodiebox/SecurityConfig.class
 com/thefancygoodiebox/infrastructure/ProductRepository.class
+com/thefancygoodiebox/model/Subscription.class
 com/thefancygoodiebox/controller/SubscriptionController.class
 com/thefancygoodiebox/BackendApplication.class
 com/thefancygoodiebox/infrastructure/ProductEntity.class
 com/thefancygoodiebox/api/ProductController.class
+com/thefancygoodiebox/service/SubscriptionService.class
+com/thefancygoodiebox/repository/SubscriptionRepository.class

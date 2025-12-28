@@ -15,7 +15,7 @@ lsof -i :8180
 kill -9 12345
 
 Spring Boot / Backend läuft auf:
-➡ http://localhost:8180
+➡ http://localhost:8081
 
 ▶ Start Frontend
 cd frontend

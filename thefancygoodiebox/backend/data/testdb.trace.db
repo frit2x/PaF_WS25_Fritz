@@ -1,0 +1,8 @@
+2025-12-28 16:45:19.066154+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "SUBSCRIPTION" nicht gefunden (diese Datenbank ist leer)
+Table "SUBSCRIPTION" not found (this database is empty); SQL statement:
+INSERT INTO subscription (name, description, price, image_url) VALUES ('Basic Abo', 'Monatliches Abo für Einsteiger', 9.99, 'https://example.com/basic.png'), ('Premium Abo', 'Vollzugriff auf alle Inhalte', 19.99, 'https://example.com/premium.png'), ('Deluxe Abo', 'Exklusive Goodies und Rabatte', 29.99, 'https://example.com/deluxe.png') [42104-224]
+2025-12-28 16:49:48.004046+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "SUBSCRIPTION" nicht gefunden (diese Datenbank ist leer)
+Table "SUBSCRIPTION" not found (this database is empty); SQL statement:
+INSERT INTO subscription (name, description, price, image_url) VALUES ('Basic Abo', 'Monatliches Abo für Einsteiger', 9.99, 'https://example.com/basic.png'), ('Premium Abo', 'Vollzugriff auf alle Inhalte', 19.99, 'https://example.com/premium.png'), ('Deluxe Abo', 'Exklusive Goodies und Rabatte', 29.99, 'https://example.com/deluxe.png') [42104-224]
