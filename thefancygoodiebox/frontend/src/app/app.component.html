@@ -1,0 +1,35 @@
+<div class="container">
+
+    <!-- LOGIN -->
+    <div *ngIf="!loggedIn" class="login-box">
+        <h2>Login</h2>
+        <input [(ngModel)]="username" placeholder="Username">
+        <input [(ngModel)]="password" type="password" placeholder="Password">
+        <button (click)="login()">Login</button>
+    </div>
+
+    <!-- CONTENT -->
+    <div *ngIf="loggedIn">
+        <button (click)="logout()">Logout</button>
+
+        <h2>Unsere Abonnements</h2>
+
+        <div class="cards">
+            <div class="card" *ngFor="let abo of subscriptions">
+
+                <img
+                        [src]="abo.imageUrl"
+                        [alt]="abo.name"
+                        style="width:100%; height:150px; object-fit:cover; border-radius:8px;"
+                >
+
+                <h3>{{ abo.name }}</h3>
+                <p>{{ abo.description }}</p>
+                <strong>{{ abo.price }} €</strong>
+
+                <button (click)="buy(abo)">Kaufen</button>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,40 @@
+# ==============================
+# Node / Angular
+# ==============================
+/frontend/node_modules
+/frontend/dist
+/frontend/out-tsc
+/frontend/.angular
+/frontend/.env
+/frontend/*.log
+
+# IDEs
+/frontend/.vscode
+/frontend/.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ==============================
+# Java / Spring Boot / Maven
+# ==============================
+/backend/target
+/backend/*.log
+/backend/.idea
+/backend/.vscode
+
+# Maven
+/backend/.mvn
+/backend/.settings
+/backend/.project
+/backend/*.iml
+/backend/release.properties
+
+# ==============================
+# Global / system
+# ==============================
+*.log
+*.tmp
+*.swp
+*.DS_Store
