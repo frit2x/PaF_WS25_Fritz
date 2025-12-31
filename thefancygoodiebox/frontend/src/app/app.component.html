@@ -11,25 +11,43 @@
     <!-- CONTENT -->
     <div *ngIf="loggedIn">
         <button (click)="logout()">Logout</button>
-
         <h2>Unsere Abonnements</h2>
 
-        <div class="cards">
-            <div class="card" *ngFor="let abo of subscriptions">
-
-                <img
-                        [src]="abo.imageUrl"
-                        [alt]="abo.name"
-                        style="width:100%; height:150px; object-fit:cover; border-radius:8px;"
-                >
-
-                <h3>{{ abo.name }}</h3>
+        <!-- OFFICE -->
+        <h3>Office</h3>
+        <div class="cards-row">
+            <div class="card" *ngFor="let abo of officeSubs">
+                <img *ngIf="abo.imageUrl" [src]="abo.imageUrl" [alt]="abo.name" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                <h4>{{ abo.name }}</h4>
                 <p>{{ abo.description }}</p>
                 <strong>{{ abo.price }} €</strong>
-
                 <button (click)="buy(abo)">Kaufen</button>
             </div>
         </div>
-    </div>
 
+        <!-- NERD -->
+        <h3>Nerd</h3>
+        <div class="cards-row">
+            <div class="card" *ngFor="let abo of nerdSubs">
+                <img *ngIf="abo.imageUrl" [src]="abo.imageUrl" [alt]="abo.name" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                <h4>{{ abo.name }}</h4>
+                <p>{{ abo.description }}</p>
+                <strong>{{ abo.price }} €</strong>
+                <button (click)="buy(abo)">Kaufen</button>
+            </div>
+        </div>
+
+        <!-- FOOD -->
+        <h3>Food</h3>
+        <div class="cards-row">
+            <div class="card" *ngFor="let abo of foodSubs">
+                <img *ngIf="abo.imageUrl" [src]="abo.imageUrl" [alt]="abo.name" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                <h4>{{ abo.name }}</h4>
+                <p>{{ abo.description }}</p>
+                <strong>{{ abo.price }} €</strong>
+                <button (click)="buy(abo)">Kaufen</button>
+            </div>
+        </div>
+
+    </div>
 </div>

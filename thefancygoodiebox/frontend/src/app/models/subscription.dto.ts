@@ -1,8 +1,8 @@
-export interface Subscription {
+export interface SubscriptionDto {
     id: number;
     name: string;
     description: string;
     price: number;
-    imageUrl: string;
+    image_url: string;   // kommt GENAU so vom Backend
     category: string;
 }

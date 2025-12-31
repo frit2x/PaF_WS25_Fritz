@@ -3,5 +3,7 @@ CREATE TABLE subscription (
                               name VARCHAR(255),
                               description VARCHAR(255),
                               price DOUBLE,
-                              image_url VARCHAR(255)
+                              image_url VARCHAR(255),
+                              category VARCHAR(50)  -- neue Spalte
 );
+

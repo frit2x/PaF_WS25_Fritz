@@ -17,6 +17,11 @@ public class Subscription {
     @Column(name = "image_url")
     private String imageUrl;
 
+    private String category;
+
+    // Default-Konstruktor (wichtig für JPA)
+    public Subscription() {}
+
     // Getter und Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -32,4 +37,7 @@ public class Subscription {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 }

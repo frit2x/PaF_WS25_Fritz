@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,12 +14,10 @@ import { Subscription } from './models/subscription.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   username = '';
   password = '';
-  loggedIn = false;
-
   subscriptions: Subscription[] = [];
 
   constructor(
@@ -28,9 +26,29 @@ export class AppComponent {
       private cdr: ChangeDetectorRef
   ) {}
 
+  ngOnInit(): void {
+    if (this.loggedIn) {
+      this.loadSubscriptions(); // automatisch beim Start, falls eingeloggt
+    }
+  }
+
+  get loggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  // Kategorien Getter
+  get officeSubs(): Subscription[] {
+    return this.subscriptions.filter(s => s.category === 'office');
+  }
+  get nerdSubs(): Subscription[] {
+    return this.subscriptions.filter(s => s.category === 'nerd');
+  }
+  get foodSubs(): Subscription[] {
+    return this.subscriptions.filter(s => s.category === 'food');
+  }
+
   login(): void {
     if (this.authService.login(this.username, this.password)) {
-      this.loggedIn = true;
       this.loadSubscriptions();
     } else {
       alert('Login fehlgeschlagen (admin / admin)');
@@ -39,20 +57,15 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout();
-    this.loggedIn = false;
     this.subscriptions = [];
   }
 
   loadSubscriptions(): void {
-    this.subscriptionService.getAll().subscribe({
-      next: data => {
-        this.subscriptions = data;
-        this.cdr.detectChanges();
-      },
-      error: err => {
-        console.error('Fehler beim Laden', err);
-      }
-    });
+    this.subscriptionService.getAll()
+        .subscribe(subs => {
+          this.subscriptions = subs;
+          this.cdr.detectChanges(); // zwingt Angular, die Ansicht zu aktualisieren
+        });
   }
 
   buy(abo: Subscription): void {
