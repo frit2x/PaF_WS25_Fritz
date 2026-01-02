@@ -3,16 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Subscription } from './models/subscription.model';
+import { SubscriptionDto } from './models/subscription.dto';
 
-// DTO vom Backend entspricht snake_case
-interface SubscriptionDto {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    image_url: string;
-    category: string;
-}
+
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +27,7 @@ export class SubscriptionService {
                     name: d.name,
                     description: d.description,
                     price: d.price,
-                    imageUrl: d.image_url ?? '',   // snake → camel
+                    imageUrl: (d as any).imageUrl || d['image_url'] || '' , // snake → camel
                     category: d.category
                 })))
             );

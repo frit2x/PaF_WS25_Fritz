@@ -15,10 +15,16 @@ import { Subscription } from './models/subscription.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
+  // Basis Properties
   username = '';
   password = '';
   subscriptions: Subscription[] = [];
+  cartCount = 0;
+
+  // Carousel Properties
+  activeCategory: string = 'all';
+  currentIndex = 0;
+  infiniteCards: Subscription[] = [];
 
   constructor(
       private authService: AuthService,
@@ -28,7 +34,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.loggedIn) {
-      this.loadSubscriptions(); // automatisch beim Start, falls eingeloggt
+      this.loadSubscriptions();
     }
   }
 
@@ -36,7 +42,7 @@ export class AppComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  // Kategorien Getter
+  // Kategorien Getter (vereinfacht)
   get officeSubs(): Subscription[] {
     return this.subscriptions.filter(s => s.category === 'office');
   }
@@ -58,17 +64,63 @@ export class AppComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.subscriptions = [];
+    this.resetCarousel();
   }
 
   loadSubscriptions(): void {
-    this.subscriptionService.getAll()
-        .subscribe(subs => {
-          this.subscriptions = subs;
-          this.cdr.detectChanges(); // zwingt Angular, die Ansicht zu aktualisieren
-        });
+    this.subscriptionService.getAll().subscribe(subs => {
+      this.subscriptions = subs;
+      this.resetCarousel();
+      this.cdr.detectChanges();
+    });
+  }
+
+  // Carousel Methoden
+  setCategory(category: string): void {
+    this.activeCategory = category;
+    this.resetCarousel();
+  }
+
+  private resetCarousel(): void {
+    let filtered = this.subscriptions;
+    if (this.activeCategory !== 'all') {
+      filtered = this.subscriptions.filter(s => s.category === this.activeCategory);
+    }
+
+    // 3x wiederholen für endlosen Loop
+    this.infiniteCards = [...filtered, ...filtered, ...filtered];
+    this.currentIndex = 0;
+  }
+
+  scrollLeft(): void {
+    this.currentIndex = Math.max(0, this.currentIndex - 1);
+  }
+
+  scrollRight(): void {
+    const maxIndex = this.infiniteCards.length - 4;
+    this.currentIndex = Math.min(maxIndex, this.currentIndex + 1);
+  }
+
+  get filteredSubs(): Subscription[] {
+    return this.activeCategory === 'all'
+        ? this.subscriptions
+        : this.subscriptions.filter(s => s.category === this.activeCategory);
+  }
+
+  discover(abo: Subscription): void {
+    alert(`🔥 Entdecke "${abo.name}"!\n\n${abo.description}\n\nSchnapp dir dieses coole Abo für nur ${abo.price}€! 😎`);
   }
 
   buy(abo: Subscription): void {
-    alert(`"${abo.name}" für ${abo.price} € gekauft`);
+    alert(`"${abo.name}" für ${abo.price} € gekauft!`);
+    this.cartCount++;
+  }
+
+  openCart(): void {
+    alert(`Warenkorb (${this.cartCount} Artikel)`);
+  }
+
+  trackById(index: number, abo: Subscription): number {
+    return abo.id;
   }
 }

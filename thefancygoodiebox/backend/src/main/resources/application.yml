@@ -1,18 +1,24 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb          # In-Memory DB
+    url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
-    password:
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: update  # ← update statt create-drop!
+    show-sql: true
+  sql:
+    init:
+      mode: always     # ← data.sql IMMER!
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
   h2:
     console:
       enabled: true
       path: /h2-console
-  jpa:
-    hibernate:
-      ddl-auto: update
-  sql:
-    init:
-      mode: always
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 server:
   port: 8081

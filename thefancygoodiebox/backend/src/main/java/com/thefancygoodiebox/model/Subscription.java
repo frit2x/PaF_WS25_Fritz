@@ -9,14 +9,11 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String description;
     private Double price;
-
     @Column(name = "image_url")
     private String imageUrl;
-
     private String category;
 
     // Default-Konstruktor (wichtig für JPA)
