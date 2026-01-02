@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   password = '';
   subscriptions: Subscription[] = [];
   cartCount = 0;
+  currentUser = '';  // Neue Property
 
   // Carousel Properties
   activeCategory: string = 'all';
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit {
 
   login(): void {
     if (this.authService.login(this.username, this.password)) {
+      this.currentUser = this.username;  // Username merken
       this.loadSubscriptions();
     } else {
       alert('Login fehlgeschlagen (admin / admin)');
@@ -63,6 +65,7 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    this.currentUser = '';
     this.subscriptions = [];
     this.resetCarousel();
   }

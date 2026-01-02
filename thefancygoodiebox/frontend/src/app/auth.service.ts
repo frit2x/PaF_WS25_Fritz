@@ -4,9 +4,15 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   private loggedIn = false;
+  private readonly users: { [key: string]: string } = {
+    'student': 'password123',
+    'admin': 'admin',
+    'testuser': 'abc'
+  };
 
   login(username: string, password: string): boolean {
-    if (username === 'admin' && password === 'admin') {
+    const validPassword = this.users[username];
+    if (validPassword && password === validPassword) {
       this.loggedIn = true;
       return true;
     }

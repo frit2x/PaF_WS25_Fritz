@@ -15,7 +15,10 @@
 
     <!-- CONTENT -->
     <div *ngIf="loggedIn">
-        <button class="logout-btn" (click)="logout()">Logout</button>
+        <div class="user-info">
+            <span>Willkommen, {{ currentUser }}!</span>
+            <button class="logout-btn" (click)="logout()">Logout</button>
+        </div>
         <h2>Unsere Abonnements</h2>
 
         <!-- Kategorien -->
