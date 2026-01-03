@@ -2,12 +2,14 @@ package com.thefancygoodiebox.controller;
 
 import com.thefancygoodiebox.model.Subscription;
 import com.thefancygoodiebox.service.SubscriptionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/subscriptions")
+@RequestMapping("/subscriptions")  // ← /subscriptions
 @CrossOrigin(origins = "http://localhost:4200")
 public class SubscriptionController {
 
@@ -17,20 +19,15 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
+    /** EINZIGE GET-Methode – filtert nach Category/Preis */
     @GetMapping
-    public List<Subscription> getAllSubscriptions(
-            @RequestParam(required = false) String category
-    ) {
-        if (category != null && !category.isBlank()) {
-            return subscriptionService.getSubscriptionsByCategory(category);
-        }
-        return subscriptionService.getAllSubscriptions();
-    }
+    public ResponseEntity<List<Subscription>> getSubscriptions(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice) {
 
-    @GetMapping("/{id}")
-    public Subscription getSubscriptionById(@PathVariable Long id) {
-        return subscriptionService.getSubscriptionById(id)
-                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+        List<Subscription> result = subscriptionService.getFiltered(category, minPrice, maxPrice);
+        return ResponseEntity.ok(result);  // ← Entity direkt (kein DTO nötig, Jackson mapped)
     }
 
     @PostMapping
@@ -39,8 +36,8 @@ public class SubscriptionController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSubscription(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSubscription(@PathVariable Long id) {
         subscriptionService.deleteSubscription(id);
+        return ResponseEntity.noContent().build();  // 204 No Content
     }
 }
-

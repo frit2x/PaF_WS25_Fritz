@@ -37,9 +37,23 @@
             </button>
         </div>
 
+        <!-- NEU: Preis-Filter -->
+        <form [formGroup]="priceForm">  <!-- ← Hinzufügen! -->
+            <label>Preisspanne: </label>
+            <input type="range" formControlName="minPrice"
+                   [min]="0" [max]="100" step="5"
+                   (input)="onPriceChange()">
+            <span>{{ priceForm.value['minPrice'] | currency:'EUR':'symbol':'1.2-2' }} </span>
+            <input type="range" formControlName="maxPrice"
+                   [min]="0" [max]="100" step="5"
+                   (input)="onPriceChange()">
+            <span>{{ priceForm.value['maxPrice'] | currency:'EUR':'symbol':'1.2-2' }}</span>
+            <button type="button" (click)="loadSubscriptions()">Aktualisieren</button>  <!-- ← type="button" -->
+        </form>
+
         <!-- CAROUSEL - KORREKTE STRUKTUR! -->
-        <div class="carousel-container" *ngIf="filteredSubs.length > 0; else loadingTemplate">
-            <!-- LINKER PFEIL -->
+        <div class="carousel-container" *ngIf="subscriptions.length > 0; else loadingTemplate">
+        <!-- LINKER PFEIL -->
             <button class="nav-arrow nav-left" (click)="scrollLeft()">←</button>
 
             <!-- TRACK mit allen Cards -->

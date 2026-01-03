@@ -1,5 +1,5 @@
 package com.thefancygoodiebox.model;
-
+import java.math.BigDecimal;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +11,14 @@ public class Subscription {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal price;
+    public BigDecimal getPrice() {
+        return price;
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
     @Column(name = "image_url")
     private String imageUrl;
     private String category;
@@ -28,9 +35,6 @@ public class Subscription {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }

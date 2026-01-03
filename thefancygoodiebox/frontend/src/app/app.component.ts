@@ -6,11 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { SubscriptionService } from './subscription.service';
 import { Subscription } from './models/subscription.model';
+import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -21,6 +23,17 @@ export class AppComponent implements OnInit {
   subscriptions: Subscription[] = [];
   cartCount = 0;
   currentUser = '';  // Neue Property
+
+
+  minPrice = 0;
+  maxPrice = 100;  // Dynamisch aus Daten ermitteln
+
+  priceForm = new FormGroup({
+    minPrice: new FormControl(0),
+    maxPrice: new FormControl(100)
+  });
+
+
 
   // Carousel Properties
   activeCategory: string = 'all';
@@ -34,24 +47,12 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.loggedIn) {
-      this.loadSubscriptions();
-    }
+    this.priceForm.patchValue({ minPrice: 0, maxPrice: 50 });  // ← Engerer Default-Filter
+    setTimeout(() => this.loadSubscriptions());
   }
 
   get loggedIn(): boolean {
     return this.authService.isLoggedIn();
-  }
-
-  // Kategorien Getter (vereinfacht)
-  get officeSubs(): Subscription[] {
-    return this.subscriptions.filter(s => s.category === 'office');
-  }
-  get nerdSubs(): Subscription[] {
-    return this.subscriptions.filter(s => s.category === 'nerd');
-  }
-  get foodSubs(): Subscription[] {
-    return this.subscriptions.filter(s => s.category === 'food');
   }
 
   login(): void {
@@ -70,30 +71,31 @@ export class AppComponent implements OnInit {
     this.resetCarousel();
   }
 
-  loadSubscriptions(): void {
-    this.subscriptionService.getAll().subscribe(subs => {
-      this.subscriptions = subs;
-      this.resetCarousel();
-      this.cdr.detectChanges();
-    });
+  loadSubscriptions(category: string = this.activeCategory): void {
+    const minP = this.priceForm.value.minPrice ?? 0;
+    const maxP = this.priceForm.value.maxPrice ?? 100;
+
+    this.subscriptionService.getFiltered(category, minP, maxP)
+        .subscribe({
+          next: subs => {
+            this.subscriptions = subs;
+            this.infiniteCards = [...subs, ...subs, ...subs];
+            this.currentIndex = 0;
+            this.cdr.detectChanges();
+          },
+          error: err => console.error('Load failed:', err)
+        });
   }
+
+
 
   // Carousel Methoden
-  setCategory(category: string): void {
-    this.activeCategory = category;
-    this.resetCarousel();
-  }
 
   private resetCarousel(): void {
-    let filtered = this.subscriptions;
-    if (this.activeCategory !== 'all') {
-      filtered = this.subscriptions.filter(s => s.category === this.activeCategory);
-    }
-
-    // 3x wiederholen für endlosen Loop
-    this.infiniteCards = [...filtered, ...filtered, ...filtered];
+    // Vereinfachen - nicht mehr nötig, da loadSubscriptions() alles macht
     this.currentIndex = 0;
   }
+
 
   scrollLeft(): void {
     this.currentIndex = Math.max(0, this.currentIndex - 1);
@@ -102,12 +104,6 @@ export class AppComponent implements OnInit {
   scrollRight(): void {
     const maxIndex = this.infiniteCards.length - 4;
     this.currentIndex = Math.min(maxIndex, this.currentIndex + 1);
-  }
-
-  get filteredSubs(): Subscription[] {
-    return this.activeCategory === 'all'
-        ? this.subscriptions
-        : this.subscriptions.filter(s => s.category === this.activeCategory);
   }
 
   discover(abo: Subscription): void {
@@ -126,4 +122,25 @@ export class AppComponent implements OnInit {
   trackById(index: number, abo: Subscription): number {
     return abo.id;
   }
+
+  setCategory(category: string): void {
+    this.activeCategory = category;
+    // Force Angular to detect the change
+    this.cdr.detectChanges();
+    this.loadSubscriptions();
+  }
+
+
+  onPriceChange(): void {
+    this.loadSubscriptions();
+  }
+
+  filterTimeout: any;
+  debounceFilter(): void {
+    clearTimeout(this.filterTimeout);
+    this.filterTimeout = setTimeout(() => {
+      this.loadSubscriptions();
+    }, 300);  // 300ms warten
+  }
+
 }
