@@ -38,7 +38,7 @@
         </div>
 
         <!-- NEU: Preis-Filter -->
-        <form [formGroup]="priceForm">  <!-- ← Hinzufügen! -->
+        <form [formGroup]="priceForm">
             <label>Preisspanne: </label>
             <input type="range" formControlName="minPrice"
                    [min]="0" [max]="100" step="5"
@@ -48,7 +48,7 @@
                    [min]="0" [max]="100" step="5"
                    (input)="onPriceChange()">
             <span>{{ priceForm.value['maxPrice'] | currency:'EUR':'symbol':'1.2-2' }}</span>
-            <button type="button" (click)="loadSubscriptions()">Aktualisieren</button>  <!-- ← type="button" -->
+            <button type="button" (click)="loadSubscriptions()">Aktualisieren</button>
         </form>
 
         <!-- CAROUSEL - KORREKTE STRUKTUR! -->

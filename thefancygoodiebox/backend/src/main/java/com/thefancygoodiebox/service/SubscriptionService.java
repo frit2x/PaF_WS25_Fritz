@@ -3,67 +3,81 @@ package com.thefancygoodiebox.service;
 import com.thefancygoodiebox.model.Subscription;
 import com.thefancygoodiebox.repository.SubscriptionRepository;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-@Service
+/**
+ * Service-Layer: Enthält ALLE Geschäftslogik und DB-Zugriffe.
+ * Controller delegiert hierher – hält Controller dünn und testbar.
+ */
+@Service  // Spring Bean – wird automatisch im Controller injected
 public class SubscriptionService {
+
+    // Repository für DB-CRUD-Operationen (Dependency Injection)
     private final SubscriptionRepository subscriptionRepository;
 
     public SubscriptionService(SubscriptionRepository subscriptionRepository) {
         this.subscriptionRepository = subscriptionRepository;
     }
 
-    public List<Subscription> getAllSubscriptions() {
+    /**
+     * Zentrale GET-Methode: Filtert Subscriptions nach Kategorie und Preisbereich.
+     * Unterstützt beliebige Kombinationen von Parametern (null = kein Filter).
+     */
+    public List<Subscription> getFiltered(String category, BigDecimal minPrice, BigDecimal maxPrice) {
+
+        // Intelligente Filter-Kombination mit Repository-Methoden
+        if (category != null && !category.trim().isEmpty()) {
+            // Filter 1: Nur Kategorie → DB WHERE category = ?
+            List<Subscription> result = subscriptionRepository.findByCategory(category);
+
+            // UND Preisbereich
+            if (minPrice != null || maxPrice != null) {
+                BigDecimal effectiveMin = minPrice != null ? minPrice : BigDecimal.ZERO;
+                BigDecimal effectiveMax = maxPrice != null ? maxPrice : new BigDecimal("999999");
+                result.removeIf(sub -> sub.getPrice().compareTo(effectiveMin) < 0 ||
+                        sub.getPrice().compareTo(effectiveMax) > 0);
+            }
+            return result;
+        }
+
+        // Nur Preisbereich
+        if (minPrice != null || maxPrice != null) {
+            BigDecimal effectiveMin = minPrice != null ? minPrice : BigDecimal.ZERO;
+            BigDecimal effectiveMax = maxPrice != null ? maxPrice : new BigDecimal("999999");
+            return subscriptionRepository.findByPriceBetweenOrderByPriceAsc(effectiveMin, effectiveMax);
+        }
+
+        // Keine Filter → alle
         return subscriptionRepository.findAll();
     }
 
-    public Optional<Subscription> getSubscriptionById(Long id) {
-        return subscriptionRepository.findById(id);
-    }
-
-    public List<Subscription> getSubscriptionsByCategory(String category) {
-        return subscriptionRepository.findByCategory(category);
-    }
-
-    // EINZELNE Price-Methode (sortiert)
-    public List<Subscription> getSubscriptionsByPriceRange(BigDecimal min, BigDecimal max) {
-        return subscriptionRepository.findByPriceBetweenOrderByPriceAsc(min, max);
-    }
-
-    /** NEU: Kombinierte Filter-Methode für Controller */
-    public List<Subscription> getFiltered(String category, BigDecimal minPrice, BigDecimal maxPrice) {
-
-        List<Subscription> subs = getAllSubscriptions();
-
-        if (category != null && !category.trim().isEmpty() && !"all".equalsIgnoreCase(category)) {
-            subs = subs.stream()
-                    .filter(s -> s.getCategory().equalsIgnoreCase(category))
-                    .toList();
-        }
-
-        if (minPrice != null) {
-            subs = subs.stream()
-                    .filter(s -> s.getPrice().compareTo(minPrice) >= 0)
-                    .toList();
-        }
-
-        if (maxPrice != null) {
-            subs = subs.stream()
-                    .filter(s -> s.getPrice().compareTo(maxPrice) <= 0)
-                    .toList();
-        }
-
-        return subs;
-    }
-
-
+    /**
+     * Speichert/updated eine Subscription.
+     * Bei neuem Objekt (id=null) wird ID von DB generiert.
+     */
     public Subscription saveSubscription(Subscription subscription) {
+        // Einfache Validierung (kann erweitert werden)
+        if (subscription.getName() == null || subscription.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Name ist erforderlich");
+        }
+        if (subscription.getPrice() == null || subscription.getPrice().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Preis muss >= 0 sein");
+        }
+
+        // Repository.save() macht INSERT oder UPDATE (smart!)
         return subscriptionRepository.save(subscription);
     }
 
+    /**
+     * Löscht Subscription per ID.
+     * Falls ID nicht existiert → EmptyResultDataAccessException (vom Repository)
+     */
     public void deleteSubscription(Long id) {
+        if (!subscriptionRepository.existsById(id)) {
+            throw new IllegalArgumentException("Subscription mit ID " + id + " nicht gefunden");
+        }
         subscriptionRepository.deleteById(id);
     }
 }
