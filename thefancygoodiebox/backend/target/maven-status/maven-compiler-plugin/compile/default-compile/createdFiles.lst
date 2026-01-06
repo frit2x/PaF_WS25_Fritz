@@ -1,6 +1,15 @@
 com/thefancygoodiebox/SecurityConfig.class
+com/thefancygoodiebox/repository/UserRepository.class
 com/thefancygoodiebox/model/Subscription.class
-com/thefancygoodiebox/service/SubscriptionService.class
-com/thefancygoodiebox/repository/SubscriptionRepository.class
+com/thefancygoodiebox/strategy/NoDiscount.class
+com/thefancygoodiebox/model/Cart.class
 com/thefancygoodiebox/controller/SubscriptionController.class
 com/thefancygoodiebox/BackendApplication.class
+com/thefancygoodiebox/model/User.class
+com/thefancygoodiebox/model/CheckoutResult.class
+com/thefancygoodiebox/repository/CartRepository.class
+com/thefancygoodiebox/service/SubscriptionService.class
+com/thefancygoodiebox/repository/SubscriptionRepository.class
+com/thefancygoodiebox/strategy/StudentDiscount.class
+com/thefancygoodiebox/strategy/DiscountStrategy.class
+com/thefancygoodiebox/service/CartService.class

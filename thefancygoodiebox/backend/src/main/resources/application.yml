@@ -6,7 +6,7 @@ spring:
     password: ''
   jpa:
     hibernate:
-      ddl-auto: update  # ← update statt create-drop!
+      ddl-auto: none #update  # ← update statt create-drop!
     show-sql: true
   sql:
     init:
