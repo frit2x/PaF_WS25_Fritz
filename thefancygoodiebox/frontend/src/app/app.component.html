@@ -1,9 +1,10 @@
 <div class="container">
-    <!-- Warenkorb Icon (EINMAL oben) -->
-    <div class="cart-icon" (click)="openCart()">
-        🛒
-        <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
-    </div>
+
+    <h1>The Fancy Goodiebox</h1>
+
+    <!-- Nur Preview - Modal ist IN cart-preview! -->
+    <app-cart-preview [username]="currentUser"></app-cart-preview>
+
 
     <!-- LOGIN -->
     <div *ngIf="!loggedIn" class="login-box">

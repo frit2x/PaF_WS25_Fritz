@@ -19,7 +19,6 @@ Spring Boot / Backend läuft auf:
 
 ▶ Start Frontend
 cd frontend
-cd frontend!!! 2x
 
 npm install
 npm start
@@ -31,3 +30,11 @@ Angular / Frontend läuft auf:
 http://localhost:8081/api/subscriptions
 
 http://localhost:8081/h2-console/login.jsp?jsessionid=951dc879030aaf70f2167cf9d88a1577
+
+
+    'student': 'password123',  // Test-User 1
+    'admin': 'admin',          // Admin-Zugang
+    'testuser': 'abc'          // Dritter Test-User
+
+http://localhost:8081/cart/items?username=student
+

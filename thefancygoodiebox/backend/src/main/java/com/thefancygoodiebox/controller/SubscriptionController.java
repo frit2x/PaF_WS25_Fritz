@@ -45,7 +45,7 @@ public class SubscriptionController {
         return ResponseEntity.noContent().build();
     }
 
-    // ✅ STRATEGY CHECKOUT 
+    // ✅ STRATEGY CHECKOUT
     @GetMapping("/cart/checkout")
     public ResponseEntity<Map<String, Object>> checkout(
             @RequestParam String username,

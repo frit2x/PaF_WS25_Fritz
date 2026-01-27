@@ -2,26 +2,31 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AuthService } from './auth.service';           // Login/Logout-Logik
 import { SubscriptionService } from './subscription.service'; // Backend-API Calls
 import { Subscription } from './models/subscription.model';   // TypeScript Interface
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { inject } from '@angular/core';
+import { CartPreviewComponent } from './cart-preview/cart-preview.component';
+import { ViewChild, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,  // Angular 17+ Standalone Components (kein NgModule nötig!)
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, CartPreviewComponent, ReactiveFormsModule, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
+  @ViewChild(CartPreviewComponent) cartPreviewComp!: CartPreviewComponent;
+  private http = inject(HttpClient);
 
   // === AUTHENTIFIZIERUNG ===
   username = '';
   password = '';
   currentUser = '';  // Aktueller Benutzername (nach Login)
-
+  cartPreview = { subtotal: 0, discount: 0, total: 0, strategy: '' };
   // === DATEN & FILTER ===
   subscriptions: Subscription[] = [];  // Hauptliste (gefiltert vom Backend)
   cartCount = 0;                       // Warenkorb-Zähler
@@ -51,16 +56,30 @@ export class AppComponent implements OnInit {
     setTimeout(() => this.loadSubscriptions());  // Backend-Call nach DOM-Ready
   }
 
+  ngAfterViewInit(): void {
+    this.resetCartPreview();  // Start leer
+  }
+
   // Computed Property: Prüft Login-Status
   get loggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
+  // NEU: Cart-Reset (für Login/Start)
+  resetCartPreview(): void {
+    if (this.cartPreviewComp) {
+      this.cartPreviewComp.updatePreview();
+      this.cartPreviewComp.loadCartItems();
+    }
+  }
+
+
   /** LOGIN: Benutzer + PW → Service → currentUser speichern */
   login(): void {
     if (this.authService.login(this.username, this.password)) {
       this.currentUser = this.username;
-      this.loadSubscriptions();  // Nach Login: Daten neu laden
+      this.resetCartPreview();  // ← Nach Login: LEER
+      this.loadSubscriptions();
     } else {
       alert('Login fehlgeschlagen (admin / admin)');
     }
@@ -114,14 +133,60 @@ export class AppComponent implements OnInit {
     alert(`🔥 Entdecke "${abo.name}"!\n\n${abo.description}\n\nSchnapp dir dieses coole Abo für nur ${abo.price}€! 😎`);
   }
 
-  buy(abo: Subscription): void {
-    alert(`"${abo.name}" für ${abo.price} € gekauft!`);
-    this.cartCount++;
+  openCart(): void {
+    this.http.get('http://localhost:8081/cart', {
+      params: { username: 'student' }
+    }).subscribe((cart: any) => {
+      this.cartCount = cart.itemCount;
+      console.table(cart.items);  // ← Items Liste!
+      alert(`Warenkorb: ${cart.itemCount} Items\n` +
+          cart.items.map((i: any) => i.name).join('\n'));
+    });
   }
 
-  openCart(): void {
-    alert(`Warenkorb (${this.cartCount} Artikel)`);
+  showCartPreview(): void {
+    console.log('🔄 Preview...');  // DEBUG!
+    this.http.get('http://localhost:8081/cart/preview', {
+      params: { username: this.currentUser }
+    }).subscribe({
+      next: (preview: any) => {
+        console.log('✅ Preview:', preview);  // ← Werte sehen!
+        this.cartPreview = {
+          subtotal: preview.subtotal || 0,
+          discount: preview.discount || 0,
+          total: preview.total || 0,
+          strategy: preview.strategy || ''
+        };
+      },
+      error: (err) => console.error('❌ Preview failed:', err)
+    });
   }
+
+  // Nach jedem buy:
+
+  buy(abo: any): void {
+    console.log('Kaufen:', abo.name, 'User:', this.currentUser);
+
+    this.http.post('http://localhost:8081/cart/add', null, {
+      params: {  // ← Einfaches Object!
+        username: this.currentUser || 'student',
+        subscriptionId: abo.id.toString()
+      }
+    }).subscribe({
+      next: (response) => {
+        console.log('✅ Added:', response);
+        if (this.cartPreviewComp) {
+          this.cartPreviewComp.updatePreview();
+          this.cartPreviewComp.loadCartItems();
+        }
+      },
+      error: (err) => {
+        console.error('❌ Add failed:', err.status, err.error);
+        alert('Fehler: ' + (err.error?.message || 'Unbekannt'));
+      }
+    });
+  }
+
 
   // *ngFor Performance-Optimierung
   trackById(index: number, abo: Subscription): number {
@@ -147,4 +212,5 @@ export class AppComponent implements OnInit {
       this.loadSubscriptions();  // 300ms warten nach letzter Eingabe
     }, 300);
   }
+
 }

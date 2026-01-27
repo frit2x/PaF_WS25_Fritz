@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import java.util.stream.Collectors;
+
 /**
  * Service-Layer: Enthält ALLE Geschäftslogik und DB-Zugriffe.
  * Controller delegiert hierher – hält Controller dünn und testbar.
@@ -26,31 +28,11 @@ public class SubscriptionService {
      * Unterstützt beliebige Kombinationen von Parametern (null = kein Filter).
      */
     public List<Subscription> getFiltered(String category, BigDecimal minPrice, BigDecimal maxPrice) {
-
-        // Intelligente Filter-Kombination mit Repository-Methoden
-        if (category != null && !category.trim().isEmpty()) {
-            // Filter 1: Nur Kategorie → DB WHERE category = ?
-            List<Subscription> result = subscriptionRepository.findByCategory(category);
-
-            // UND Preisbereich
-            if (minPrice != null || maxPrice != null) {
-                BigDecimal effectiveMin = minPrice != null ? minPrice : BigDecimal.ZERO;
-                BigDecimal effectiveMax = maxPrice != null ? maxPrice : new BigDecimal("999999");
-                result.removeIf(sub -> sub.getPrice().compareTo(effectiveMin) < 0 ||
-                        sub.getPrice().compareTo(effectiveMax) > 0);
-            }
-            return result;
-        }
-
-        // Nur Preisbereich
-        if (minPrice != null || maxPrice != null) {
-            BigDecimal effectiveMin = minPrice != null ? minPrice : BigDecimal.ZERO;
-            BigDecimal effectiveMax = maxPrice != null ? maxPrice : new BigDecimal("999999");
-            return subscriptionRepository.findByPriceBetweenOrderByPriceAsc(effectiveMin, effectiveMax);
-        }
-
-        // Keine Filter → alle
-        return subscriptionRepository.findAll();
+        return subscriptionRepository.findAll().stream()
+                .filter(s -> category == null || "all".equals(category) || category.equals(s.getCategory()))
+                .filter(s -> minPrice == null || s.getPrice().compareTo(minPrice) >= 0)
+                .filter(s -> maxPrice == null || s.getPrice().compareTo(maxPrice) <= 0)
+                .collect(Collectors.toList());
     }
 
     /**

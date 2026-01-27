@@ -1,7 +1,9 @@
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/BackendApplication.java
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/SecurityConfig.java
+/Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/controller/CartController.java
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/controller/SubscriptionController.java
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/model/Cart.java
+/Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/model/CartInfo.java
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/model/CheckoutResult.java
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/model/Subscription.java
 /Users/heikefritz/Documents/Studium/PaF/PaF_Fritz_WS25/Ohne Titel/thefancygoodiebox/backend/src/main/java/com/thefancygoodiebox/model/User.java

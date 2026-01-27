@@ -1,5 +1,7 @@
+com/thefancygoodiebox/controller/CartController.class
 com/thefancygoodiebox/SecurityConfig.class
 com/thefancygoodiebox/repository/UserRepository.class
+com/thefancygoodiebox/model/CartInfo.class
 com/thefancygoodiebox/model/Subscription.class
 com/thefancygoodiebox/strategy/NoDiscount.class
 com/thefancygoodiebox/model/Cart.class

@@ -17,14 +17,22 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "cart_subscriptions",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscriptions_id")
+    )
     private List<Subscription> subscriptions = new ArrayList<>();
 
+    @ManyToMany
     public BigDecimal total() {
         return subscriptions.stream()
                 .map(Subscription::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+
 
     public void addSubscription(Subscription s) {
         subscriptions.add(s);
