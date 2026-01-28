@@ -1,6 +1,35 @@
-/* KOMPLETTES CSS - app.component.css (alles auf einmal) */
-
 /* Container */
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap'); /* geschwungene Schrift */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Patrick+Hand&display=swap');
+
+.headline {
+  font-family: 'Patrick Hand', cursive; /* Handschriftlich, aber gut lesbar */
+  font-size: 1.8rem;                    /* kleiner als Haupttitel */
+  color: #ff9061;                       /* abgestimmt auf Header-Farbe */
+  text-align: center;
+  margin: 0px 0 0px 0;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* leichter Schatten */
+  transition: transform 0.3s;
+}
+
+.headline:hover {
+  transform: scale(1.02); /* kleiner, subtiler Hover-Effekt */
+}
+
+.fancy-header {
+  font-family: 'Pacifico', cursive; /* geschwungene Schrift */
+  font-size: 3rem;                  /* schön groß */
+  color: #ff6f61;                   /* fröhliche Farbe */
+  text-align: center;                /* zentriert */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* leichter Schatten */
+  margin: 20px 0;
+  letter-spacing: 1px;              /* etwas Abstand zwischen Buchstaben */
+  transition: transform 0.3s;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -9,34 +38,48 @@
   min-height: 100vh;
 }
 
-/* Warenkorb Icon */
+.fancy-header:hover {
+  transform: scale(1.05) rotate(-1deg); /* kleiner Hover-Effekt */
+}
+
 .cart-icon {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+  position: absolute;          /* ← NICHT fixed */
+  top: 70px;                   /* unter Logout */
+  right: 20px;                 /* rechts ausgerichtet */
+
   background: #007bff;
   color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  padding: 10px 20px;
+  border-radius: 5px;
+
+  min-width: 110px;
+  height: auto;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  gap: 6px;
+
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+
   box-shadow: 0 4px 12px rgba(0,123,255,0.3);
   z-index: 1000;
-  transition: transform 0.2s;
 }
 
 .cart-icon:hover {
-  transform: scale(1.1);
+  background: #0056b3;
 }
+
+
+
+
 
 .cart-count {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -6px;
+  right: -6px;
   background: #dc3545;
   color: white;
   border-radius: 50%;
@@ -48,86 +91,26 @@
   justify-content: center;
 }
 
-/* Logout Button */
-.logout-btn {
-  position: absolute;
-  top: 20px;
-  right: 90px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
+/* Headline */
+.headline {
+  margin-top: 40px;
 }
 
-.logout-btn:hover {
-  background: #5a6268;
+/* Kategorien + Preisfilter */
+.top-filters {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 30px 0;
 }
 
-/* Login Box */
-.login-box {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 40px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.login-box h2 {
-  margin-bottom: 30px;
-  color: #2c3e50;
-}
-
-.login-box input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 16px;
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s;
-}
-
-.login-box input:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 14px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.login-box button:hover {
-  background: #0056b3;
-}
-
-/* Kategorien */
+/* Kategorien (ORIGINAL) */
 .categories {
   display: flex;
   gap: 12px;
-  margin: 30px 0;
   overflow-x: auto;
   padding-bottom: 12px;
   scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.categories::-webkit-scrollbar {
-  display: none;
 }
 
 .category-btn {
@@ -138,7 +121,6 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.3s;
-  flex-shrink: 0;
   font-weight: 500;
 }
 
@@ -150,7 +132,24 @@
   transform: translateY(-1px);
 }
 
-/* CAROUSEL - Hauptteil */
+/* Preisfilter */
+.price-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+.price-filter input[type="range"] {
+  width: 90px;
+}
+
+/* ===================== */
+/* CAROUSEL – ORIGINAL */
+/* ===================== */
+
 .carousel-container {
   position: relative;
   height: 380px;
@@ -200,7 +199,6 @@
   font-size: 1.05em;
   color: #2c3e50;
   font-weight: 600;
-  line-height: 1.2;
 }
 
 .carousel-card p {
@@ -209,13 +207,9 @@
   color: #7f8c8d;
   font-size: 0.88em;
   line-height: 1.35;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
-.carousel-card .price {
+.price {
   font-size: 1.25em;
   font-weight: 700;
   color: #e74c3c;
@@ -227,25 +221,9 @@
   gap: 6px;
 }
 
-.carousel-card button {
-  flex: 1;
-  padding: 8px 6px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85em;
-  transition: all 0.3s;
-}
-
 .btn-buy {
   background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
-}
-
-.btn-buy:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(40,167,69,0.4);
 }
 
 .btn-discover {
@@ -253,12 +231,56 @@
   color: white;
 }
 
-.btn-discover:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+.login-box {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
-/* Carousel Pfeile */
+.login-box h2 {
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.login-box input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 14px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-box button:hover {
+  background: #0056b3;
+}
+
+
+/* Pfeile */
 .nav-arrow {
   position: absolute;
   top: 50%;
@@ -274,9 +296,6 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   transition: all 0.3s;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .nav-arrow:hover {
@@ -284,13 +303,8 @@
   transform: translateY(-50%) scale(1.1);
 }
 
-.nav-left {
-  left: 16px;
-}
-
-.nav-right {
-  right: 16px;
-}
+.nav-left { left: 16px; }
+.nav-right { right: 16px; }
 
 /* Loading */
 .loading {
@@ -299,44 +313,55 @@
   align-items: center;
   justify-content: center;
   color: #7f8c8d;
-  font-size: 1.2em;
-  background: #f8f9fa;
-  border-radius: 16px;
 }
+.cart-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Abstand zwischen Icon und Button */
+}
+
+/* Warenkorb rund stylen */
+app-cart-preview .cart-preview {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: #ff6f61;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+app-cart-preview .cart-preview:hover {
+  transform: scale(1.1);
+  background-color: #ff4a3a;
+}
+
+/* Checkout-Button wie Logout */
+.logout-btn {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #ff4a3a;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: 15px;
-  }
-
-  .carousel-container,
-  .loading {
-    height: 260px;
-  }
-
-  .carousel-card {
-    width: 220px;
-    height: 220px;
-  }
-
-  .carousel-card img {
-    height: 95px;
-  }
-
-  .carousel-track {
-    gap: 20px;
-    padding: 0 70px;
+  .top-filters {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
-@media (max-width: 480px) {
-  .carousel-card {
-    width: 200px;
-    height: 200px;
-  }
-
-  .carousel-card img {
-    height: 85px;
-  }
-}

@@ -213,4 +213,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     }, 300);
   }
 
+  goToCart() {
+    const cartElement = document.querySelector('app-cart-preview') as any;
+    if (cartElement) cartElement.toggleCart();
+  }
+
 }

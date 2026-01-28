@@ -1,11 +1,5 @@
 <div class="container">
-
-    <h1>The Fancy Goodiebox</h1>
-
-    <!-- Nur Preview - Modal ist IN cart-preview! -->
-    <app-cart-preview [username]="currentUser"></app-cart-preview>
-
-
+    <h1 class="fancy-header">The Fancy Goodiebox</h1>
     <!-- LOGIN -->
     <div *ngIf="!loggedIn" class="login-box">
         <h2>Login</h2>
@@ -16,68 +10,92 @@
 
     <!-- CONTENT -->
     <div *ngIf="loggedIn">
-        <div class="user-info">
-            <span>Willkommen, {{ currentUser }}!</span>
+
+        <div class="cart-container">
+            <app-cart-preview [username]="currentUser"></app-cart-preview>
+            <!-- Checkout-Button -->
             <button class="logout-btn" (click)="logout()">Logout</button>
         </div>
-        <h2>Unsere Abonnements</h2>
 
-        <!-- Kategorien -->
-        <div class="categories">
-            <button class="category-btn" [class.active]="activeCategory === 'all'" (click)="setCategory('all')">
-                Alle
-            </button>
-            <button class="category-btn" [class.active]="activeCategory === 'office'" (click)="setCategory('office')">
-                Office
-            </button>
-            <button class="category-btn" [class.active]="activeCategory === 'nerd'" (click)="setCategory('nerd')">
-                Nerd
-            </button>
-            <button class="category-btn" [class.active]="activeCategory === 'food'" (click)="setCategory('food')">
-                Food
-            </button>
+        <!-- neue Überschrift -->
+        <h2 class="headline">
+            Hey {{ currentUser }}, schau dir an,
+            was du nicht brauchst – aber unbedingt willst 😏
+        </h2>
+
+        <!-- Kategorien + Preisfilter in EINER ZEILE -->
+        <div class="top-filters">
+
+            <div class="categories">
+                <button class="category-btn"
+                        [class.active]="activeCategory === 'all'"
+                        (click)="setCategory('all')">Alle</button>
+
+                <button class="category-btn"
+                        [class.active]="activeCategory === 'office'"
+                        (click)="setCategory('office')">Office</button>
+
+                <button class="category-btn"
+                        [class.active]="activeCategory === 'nerd'"
+                        (click)="setCategory('nerd')">Nerd</button>
+
+                <button class="category-btn"
+                        [class.active]="activeCategory === 'food'"
+                        (click)="setCategory('food')">Food</button>
+            </div>
+
+            <form class="price-filter" [formGroup]="priceForm">
+                <label>Preis</label>
+
+                <input type="range"
+                       formControlName="minPrice"
+                       min="0" max="100" step="5"
+                       (input)="onPriceChange()">
+
+                <input type="range"
+                       formControlName="maxPrice"
+                       min="0" max="100" step="5"
+                       (input)="onPriceChange()">
+
+                <span>
+          {{ priceForm.value.minPrice }}€ – {{ priceForm.value.maxPrice }}€
+        </span>
+            </form>
+
         </div>
 
-        <!-- NEU: Preis-Filter -->
-        <form [formGroup]="priceForm">
-            <label>Preisspanne: </label>
-            <input type="range" formControlName="minPrice"
-                   [min]="0" [max]="100" step="5"
-                   (input)="onPriceChange()">
-            <span>{{ priceForm.value['minPrice'] | currency:'EUR':'symbol':'1.2-2' }} </span>
-            <input type="range" formControlName="maxPrice"
-                   [min]="0" [max]="100" step="5"
-                   (input)="onPriceChange()">
-            <span>{{ priceForm.value['maxPrice'] | currency:'EUR':'symbol':'1.2-2' }}</span>
-            <button type="button" (click)="loadSubscriptions()">Aktualisieren</button>
-        </form>
+        <!-- CAROUSEL – UNVERÄNDERT -->
+        <div class="carousel-container"
+             *ngIf="subscriptions.length > 0; else loadingTemplate">
 
-        <!-- CAROUSEL - KORREKTE STRUKTUR! -->
-        <div class="carousel-container" *ngIf="subscriptions.length > 0; else loadingTemplate">
-        <!-- LINKER PFEIL -->
             <button class="nav-arrow nav-left" (click)="scrollLeft()">←</button>
 
-            <!-- TRACK mit allen Cards -->
-            <div class="carousel-track" [style.transform]="'translateX(-' + (currentIndex * 264) + 'px)'">
-                <div class="carousel-card" *ngFor="let abo of infiniteCards; trackBy: trackById">
+            <div class="carousel-track"
+                 [style.transform]="'translateX(-' + (currentIndex * 264) + 'px)'">
+
+                <div class="carousel-card"
+                     *ngFor="let abo of infiniteCards; trackBy: trackById">
+
                     <img *ngIf="abo.imageUrl" [src]="abo.imageUrl" [alt]="abo.name">
                     <h4>{{ abo.name }}</h4>
                     <p>{{ abo.description }}</p>
+
                     <div class="price">{{ abo.price }} €</div>
+
                     <div class="buttons-row">
                         <button class="btn-buy" (click)="buy(abo)">Kaufen</button>
                         <button class="btn-discover" (click)="discover(abo)">Neugierig?</button>
                     </div>
+
                 </div>
             </div>
 
-            <!-- RECHTER PFEIL -->
             <button class="nav-arrow nav-right" (click)="scrollRight()">→</button>
         </div>
 
-        <!-- Loading Template -->
         <ng-template #loadingTemplate>
             <div class="loading">Lade Abonnements...</div>
         </ng-template>
+
     </div>
 </div>
